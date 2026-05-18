@@ -1490,6 +1490,15 @@
     ScrollTrigger.refresh();
     updateZoom();
 
+    /* ---- NAV ANCHORS — intercepter pour Locomotive Scroll ---- */
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) locoScroll.scrollTo(target);
+      });
+    });
+
     /* ---- MENU — animation le-spike ---- */
     const menuItemStyle = document.createElement('style');
     menuItemStyle.textContent = `
