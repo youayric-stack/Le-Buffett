@@ -593,6 +593,8 @@
     /* ============================================================
        SECTION 7 — IDENTITY PRE-FOOTER (ONYX style)
     ============================================================ */
+    .atm-mobile-text { display: none; }
+
     #identity-section {
       background: white;
       overflow: hidden;
@@ -870,35 +872,47 @@
       .gallery-right { width: 100%; flex: none; padding: 24px; }
       .gallery-right-img img { height: auto; }
 
-      /* ---- SECTION 6 — ATMOSPHERE : photo avec marges + titre centré, sans texte ni bande ---- */
+      /* ---- SECTION 6 — ATMOSPHERE : titre + description au-dessus de la photo ---- */
       html, body, #smooth-wrapper { background: white !important; }
       #atmosphere-section {
-        padding: 0 !important;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 40px 20px !important;
         margin: 0 !important;
         background: white !important;
-        height: 80vw;
-        overflow: hidden;
+      }
+      .atm-mobile-text {
+        display: block;
+        text-align: center;
+      }
+      .atm-title-mobile {
+        font-family: var(--serif);
+        font-size: clamp(2.8rem, 12vw, 5rem);
+        font-weight: 300;
+        letter-spacing: 0.02em;
+        color: var(--text);
+        margin: 0 0 12px;
+      }
+      .atm-desc-mobile {
+        font-family: var(--sans);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--text);
+        opacity: 0.75;
+        margin: 0;
       }
       #identity-section { margin-top: 0; background: white; }
       .atm-img-wrap {
         clip-path: none !important;
         height: 80vw;
-        margin: 0 20px;
+        margin: 0;
         border-radius: 4px;
         overflow: hidden;
+        flex-shrink: 0;
       }
-      .atm-img-wrap img { transform: none !important; }
-      .atm-overlay {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-      }
-      .atm-text { transform: none !important; text-align: center; }
-      .atm-title { font-size: clamp(2.8rem, 12vw, 5rem); }
-      .atm-desc { display: none; }
+      .atm-img-wrap img { transform: none !important; width: 100%; height: 100%; object-fit: cover; }
+      .atm-overlay { display: none !important; }
       .atm-label { display: none; }
 
       /* ---- SECTION 7 — IDENTITY : texte centré sur l'image avec marges ---- */
@@ -1347,6 +1361,10 @@
        SECTION 6 — ATMOSPHERE (pleine largeur avec texte overlay)
   ============================================================ -->
   <section id="atmosphere-section">
+    <div class="atm-mobile-text">
+      <h2 class="atm-title-mobile">Sans retenue</h2>
+      <p class="atm-desc-mobile">Saumon fumé, tataki, dim sum, bouillons parfumés — une carte sans limite pensée pour ceux qui veulent tout goûter, sans jamais choisir.</p>
+    </div>
     <div class="atm-img-wrap">
       <img src="images/image8.jpg" alt="Salle du restaurant Le Buffett Paris">
       <div class="atm-overlay">
