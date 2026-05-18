@@ -810,6 +810,211 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ============================================================
+       MOBILE — max-width: 768px
+    ============================================================ */
+    @media (max-width: 768px) {
+
+      /* ---- NAV ---- */
+      nav {
+        padding: 16px 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-logo {
+        font-size: 1rem;
+      }
+
+      /* ---- SECTION 1 — HERO ---- */
+      .hero-content {
+        padding: 0 24px 48px;
+      }
+
+      .hero-name {
+        font-size: clamp(3.5rem, 18vw, 6rem);
+      }
+
+      .hero-eyebrow {
+        font-size: 0.7rem;
+      }
+
+      /* ---- SECTION 2 — SPLIT ---- */
+      #split-section {
+        flex-direction: column;
+        padding: 40px 24px;
+        gap: 32px;
+      }
+
+      .split-left {
+        width: 100%;
+        padding-top: 0;
+      }
+
+      .split-right {
+        width: 100%;
+        height: 55vw;
+        position: relative;
+        /* disable sticky on mobile */
+      }
+
+      /* override locomotive sticky data attributes on mobile */
+      .split-right[data-scroll-sticky] {
+        position: relative !important;
+        top: auto !important;
+      }
+
+      .sl-img-top,
+      .sl-img-bottom {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .sl-text {
+        padding: 32px 0;
+      }
+
+      .sl-text h2 {
+        font-size: clamp(2rem, 7vw, 3rem);
+      }
+
+      /* ---- SECTION 3 — ABOUT ---- */
+      #about-section {
+        padding: 60px 24px 40px;
+      }
+
+      #about-section .main-title {
+        font-size: clamp(2.4rem, 10vw, 4rem);
+        margin-bottom: 40px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .about-img img {
+        margin-top: 0;
+      }
+
+      .about-copy {
+        padding: 0;
+      }
+
+      /* ---- SECTION 4 — MENU ---- */
+      .menu-header {
+        padding: 0 24px;
+        margin-bottom: 40px;
+      }
+
+      .menu-main-title {
+        font-size: clamp(2.4rem, 10vw, 4rem);
+      }
+
+      .menu-body {
+        padding: 0 24px;
+      }
+
+      .menu-panel-title {
+        font-size: clamp(1.4rem, 5vw, 2rem);
+      }
+
+      .item-name {
+        font-size: 1.4rem;
+      }
+
+      .item-top-row {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .item-line {
+        display: none;
+      }
+
+      .item-desc {
+        width: 100%;
+        padding-left: 0;
+      }
+
+      /* ---- SECTION 5 — GALLERY ---- */
+      #gallery-section {
+        flex-direction: column;
+      }
+
+      .gallery-left {
+        width: 100%;
+        flex: none;
+        padding: 40px 24px;
+      }
+
+      .gallery-right {
+        width: 100%;
+        flex: none;
+        padding: 24px;
+      }
+
+      .gallery-right-img img {
+        height: auto;
+      }
+
+      /* ---- SECTION 6 — ATMOSPHERE ---- */
+      .atm-title {
+        font-size: clamp(3rem, 12vw, 6rem);
+      }
+
+      .atm-desc {
+        font-size: 1rem;
+        padding: 0 16px;
+      }
+
+      .atm-overlay {
+        padding: 20px 24px 0;
+      }
+
+      /* ---- SECTION 7 — IDENTITY ---- */
+      .id-grid {
+        display: block;
+      }
+
+      .id-text-col {
+        grid-column: auto;
+        grid-row: auto;
+        padding: 48px 24px;
+      }
+
+      .id-img-col {
+        grid-column: auto;
+        grid-row: auto;
+        margin-right: 0;
+        clip-path: none;
+      }
+
+      .id-name {
+        font-size: clamp(3.5rem, 15vw, 7rem);
+        white-space: normal;
+      }
+
+      /* ---- FOOTER ---- */
+      footer {
+        padding: 48px 24px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+    }
   </style>
 </head>
 <body>
@@ -1461,43 +1666,55 @@
     /* ---- LOCOMOTIVE SCROLL + GSAP ---- */
     gsap.registerPlugin(ScrollTrigger);
 
-    const locoScroll = new LocomotiveScroll({
-      el: document.querySelector('[data-scroll-container]'),
-      smooth: true,
-      multiplier: 0.7,
-      lerp: 0.08,
-    });
-
-    // Sync Locomotive with GSAP ScrollTrigger
-    ScrollTrigger.scrollerProxy('[data-scroll-container]', {
-      scrollTop(value) {
-        return arguments.length
-          ? locoScroll.scrollTo(value, { duration: 0, disableLerp: true })
-          : locoScroll.scroll.instance.scroll.y;
-      },
-      getBoundingClientRect() {
-        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-      },
-    });
-
-    locoScroll.on('scroll', ({ scroll }) => {
-      ScrollTrigger.update();
-      updateZoom();
-      navEl.classList.toggle('nav-scrolled', scroll.y > 80);
-    });
-
-    ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
-    ScrollTrigger.refresh();
-    updateZoom();
-
-    /* ---- NAV ANCHORS — intercepter pour Locomotive Scroll ---- */
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const target = document.querySelector(link.getAttribute('href'));
-        if (target) locoScroll.scrollTo(target);
+    if (window.innerWidth > 768) {
+      /* Desktop: use Locomotive Scroll for smooth inertia scrolling */
+      const locoScroll = new LocomotiveScroll({
+        el: document.querySelector('[data-scroll-container]'),
+        smooth: true,
+        multiplier: 0.7,
+        lerp: 0.08,
       });
-    });
+
+      // Sync Locomotive with GSAP ScrollTrigger
+      ScrollTrigger.scrollerProxy('[data-scroll-container]', {
+        scrollTop(value) {
+          return arguments.length
+            ? locoScroll.scrollTo(value, { duration: 0, disableLerp: true })
+            : locoScroll.scroll.instance.scroll.y;
+        },
+        getBoundingClientRect() {
+          return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+        },
+      });
+
+      locoScroll.on('scroll', ({ scroll }) => {
+        ScrollTrigger.update();
+        updateZoom();
+        navEl.classList.toggle('nav-scrolled', scroll.y > 80);
+      });
+
+      ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
+      ScrollTrigger.refresh();
+      updateZoom();
+
+      /* ---- NAV ANCHORS — intercepter pour Locomotive Scroll ---- */
+      document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(link.getAttribute('href'));
+          if (target) locoScroll.scrollTo(target);
+        });
+      });
+
+    } else {
+      /* Mobile: use native scroll — Locomotive Scroll causes issues on touch devices */
+      window.addEventListener('scroll', () => {
+        updateZoom();
+        navEl.classList.toggle('nav-scrolled', window.scrollY > 80);
+      }, { passive: true });
+
+      updateZoom();
+    }
 
     /* ---- MENU — animation le-spike ---- */
     const menuItemStyle = document.createElement('style');
