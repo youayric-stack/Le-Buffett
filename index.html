@@ -871,9 +871,15 @@
       .gallery-right-img img { height: auto; }
 
       /* ---- SECTION 6 — ATMOSPHERE : photo avec marges + titre centré, sans texte ni bande ---- */
-      body, #smooth-wrapper { background: white; }
-      #atmosphere-section { padding: 0; margin: 0; background: white; }
-      #identity-section { margin-top: 0; }
+      html, body, #smooth-wrapper { background: white !important; }
+      #atmosphere-section {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: white !important;
+        height: 80vw;
+        overflow: hidden;
+      }
+      #identity-section { margin-top: 0; background: white; }
       .atm-img-wrap {
         clip-path: none !important;
         height: 80vw;
