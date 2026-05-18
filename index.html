@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Buffett — Restaurant Chinois · Paris</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       RESET & CUSTOM PROPERTIES
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:     #F9F7F2;
+      --light:  #F0EDE6;
+      --text:   #1C1C1A;
+      --muted:  #888880;
+      --accent: #8B6B4A;
+      --gold:   #C9A96E;
+      --serif:  'Cormorant Garamond', Georgia, serif;
+      --sans:   'Jost', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    html.has-scroll-smooth { overflow: hidden; }
+    html.has-scroll-init { overflow: hidden; height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      overflow-x: hidden;
+      height: 100%;
+    }
+
+    [data-scroll-container] { min-height: 100%; }
+
+    img { display: block; max-width: 100%; }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 1000;
+      padding: 24px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+    }
+
+    nav.nav-scrolled {
+      background: rgba(249,247,242,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(28,28,26,0.07);
+    }
+
+    nav * { pointer-events: auto; }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: white;
+      text-decoration: none;
+      mix-blend-mode: difference;
+      transition: color 0.4s;
+    }
+
+    nav.nav-scrolled .nav-logo {
+      color: var(--text);
+      mix-blend-mode: normal;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+      mix-blend-mode: difference;
+    }
+
+    nav.nav-scrolled .nav-links {
+      mix-blend-mode: normal;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: white;
+      text-decoration: none;
+      transition: opacity 0.3s, color 0.4s;
+    }
+
+    nav.nav-scrolled .nav-links a {
+      color: var(--text);
+    }
+
+    .nav-links a:hover { opacity: 0.55; }
+    .nav-links a:active { transform: translateY(1px); }
+
+    /* ============================================================
+       SECTION 1 — HERO
+    ============================================================ */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .hero-img-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .hero-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      will-change: transform;
+    }
+
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(18,14,9,0.08) 0%,
+        rgba(18,14,9,0.02) 38%,
+        rgba(18,14,9,0.65) 100%
+      );
+    }
+
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 80px 72px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: white;
+      margin-bottom: 18px;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(5.5rem, 13vw, 15rem);
+      font-weight: 300;
+      line-height: 0.85;
+      letter-spacing: -0.025em;
+      color: white;
+    }
+
+    .hero-scroll {
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .hero-scroll span {
+      font-size: 0.8rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    .scroll-bar {
+      width: 56px;
+      height: 1px;
+      background: rgba(201,169,110,0.45);
+    }
+
+    /* ============================================================
+       SECTION 2 — SPLIT (image fixe droite, contenu scrollable gauche)
+    ============================================================ */
+    #split-section {
+      display: flex;
+      align-items: flex-start;
+      margin-top: 0;
+      padding-top: 80px;
+      gap: 60px;
+      padding: 80px 40px 0;
+      background: white;
+    }
+
+    /* LEFT — scrollable */
+    .split-left {
+      width: calc(50% - 30px);
+      flex-shrink: 0;
+      padding-top: 80px;
+    }
+
+    .sl-img-top {
+      overflow: hidden;
+      width: 85%;
+      margin-left: 30px;
+    }
+
+    .sl-img-top img {
+      width: 100%;
+      aspect-ratio: 3/2;
+      object-fit: cover;
+    }
+
+    .sl-text {
+      padding: 60px 60px 60px 80px;
+    }
+
+    .sl-text .label {
+      display: block;
+      font-size: 0.63rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+    }
+
+    .sl-text h2 {
+      font-family: var(--serif);
+      font-size: clamp(2.6rem, 3.6vw, 4.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      margin-bottom: 38px;
+    }
+
+    .sl-text p {
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--muted);
+      max-width: 460px;
+      margin-bottom: 18px;
+    }
+
+    .sl-img-bottom {
+      overflow: hidden;
+      width: 85%;
+      margin-left: 30px;
+    }
+
+    .sl-img-bottom img {
+      width: 100%;
+      aspect-ratio: 3/2;
+      object-fit: cover;
+    }
+
+    /* RIGHT — sticky via Locomotive */
+    .split-right {
+      width: calc(50% - 30px);
+      flex-shrink: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .split-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* ============================================================
+       SECTION 3 — ABOUT (titre + image gauche / texte droite)
+    ============================================================ */
+    #about-section {
+      padding: 100px 80px 40px 160px;
+      background: white;
+    }
+
+    #about-section .section-label {
+      display: block;
+      font-size: 0.63rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 22px;
+    }
+
+    #about-section .main-title {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 6.5vw, 8rem);
+      font-weight: 300;
+      line-height: 0.93;
+      letter-spacing: -0.025em;
+      margin-bottom: 80px;
+      text-align: center;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 80px;
+      align-items: stretch;
+    }
+
+    .about-img {
+      overflow: hidden;
+    }
+
+    .about-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin-top: -15%;
+    }
+
+    .about-copy {
+      padding: 40px 0;
+      align-self: center;
+    }
+
+    .about-copy .pull-quote {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2vw, 2.1rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1.4;
+      margin-bottom: 42px;
+    }
+
+    .about-copy p {
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* ============================================================
+       SECTION 4 — MENU CARD
+    ============================================================ */
+    #menu-section {
+      background: white;
+      color: var(--text);
+      padding: 40px 0 0;
+    }
+
+    .menu-header {
+      text-align: center;
+      padding: 0 80px;
+      margin-bottom: 70px;
+    }
+
+    .menu-main-title {
+      font-family: var(--serif);
+      font-size: clamp(3.2rem, 6.5vw, 8rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 0.93;
+      color: var(--text);
+    }
+
+    /* Tabs */
+    .menu-tabs-wrap {
+      display: none;
+    }
+
+    /* Panels */
+    .menu-body {
+      padding: 0 80px;
+    }
+
+    .menu-panel {
+      display: block;
+      margin-bottom: 80px;
+    }
+
+    .menu-panel:last-child {
+      margin-bottom: 0;
+    }
+
+    .menu-panel-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 2.8vw, 3rem);
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.06em;
+      text-transform: none;
+      color: var(--accent);
+      text-align: center;
+      padding-bottom: 0;
+      border-bottom: none;
+      margin-bottom: 44px;
+    }
+
+    .menu-items {
+      display: block;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      padding: 28px 0;
+    }
+
+    .menu-item:nth-child(odd),
+    .menu-item:nth-child(even) {
+      padding-left: 0;
+      padding-right: 0;
+      border-left: none;
+    }
+
+    .item-top-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .item-line {
+      flex: 1;
+      min-width: 60px;
+      height: 1px;
+      background: rgba(28,28,26,0.18);
+      margin: 0 24px;
+      align-self: center;
+      position: relative;
+      top: -4px;
+    }
+
+    .item-info { display: contents; }
+
+    .item-name {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .item-desc {
+      font-size: 1.05rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1.65;
+    }
+
+    .item-price {
+      display: none;
+    }
+
+    /* ============================================================
+       SECTION 5 — GALLERY DUO (image gauche / titre + image droite)
+    ============================================================ */
+    #gallery-section {
+      display: flex;
+      align-items: stretch;
+      min-height: 100vh;
+      background: white;
+    }
+
+    .gallery-left {
+      flex: 0 0 50%;
+      padding: 80px 0 80px 60px;
+    }
+
+    .gallery-left-inner {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .gallery-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-right {
+      flex: 0 0 50%;
+      background: white;
+      padding: 0 60px 0 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 44px;
+    }
+
+    .gallery-right h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 2.2vw, 2.8rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 0.9;
+      letter-spacing: -0.025em;
+      white-space: nowrap;
+      perspective: 500px;
+      text-align: center;
+    }
+
+    .gallery-right-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ============================================================
+       SECTION 6 — ATMOSPHERE (pleine largeur avec texte overlay)
+    ============================================================ */
+    #atmosphere-section {
+      position: relative;
+      background: white;
+      padding: 60px 0;
+    }
+
+    .atm-img-wrap {
+      position: relative;
+      overflow: hidden;
+      will-change: clip-path;
+    }
+
+    .atm-img-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .atm-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(12,10,7,0.54);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: center;
+      padding: 20px 60px 0;
+    }
+
+    .atm-text {
+      will-change: transform;
+    }
+
+    .atm-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: rgba(201,169,110,0.7);
+      margin-bottom: 28px;
+    }
+
+    .atm-title {
+      font-family: var(--serif);
+      font-size: clamp(5rem, 10vw, 13rem);
+      font-weight: 300;
+      color: white;
+      line-height: 0.9;
+      letter-spacing: -0.025em;
+      margin-bottom: 40px;
+    }
+
+    .atm-desc {
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(249,247,242,0.62);
+      max-width: 560px;
+      letter-spacing: 0.02em;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    /* ============================================================
+       SECTION 7 — IDENTITY PRE-FOOTER (ONYX style)
+    ============================================================ */
+    #identity-section {
+      background: white;
+      overflow: hidden;
+    }
+
+    .id-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      align-items: center;
+    }
+
+    .id-text-col {
+      grid-column: 1 / 11;
+      grid-row: 1;
+      position: relative;
+      z-index: 2;
+      padding: 80px 0 80px 60px;
+    }
+
+    .id-img-col {
+      grid-column: 6 / 13;
+      grid-row: 1;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      margin-right: 60px;
+      clip-path: inset(7% 0);
+    }
+
+    .id-img-col img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transform: scale(1.15);
+      transform-origin: center center;
+    }
+
+    .id-name {
+      font-family: var(--serif);
+      font-size: clamp(5rem, 13vw, 18rem);
+      font-weight: 300;
+      line-height: 0.88;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      white-space: nowrap;
+      text-transform: uppercase;
+      margin: 20px 0;
+    }
+
+    .id-eyebrow,
+    .id-tagline {
+      font-family: var(--serif);
+      font-size: clamp(1.1rem, 1.6vw, 1.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(28,28,26,0.55);
+      letter-spacing: 0.01em;
+      line-height: 1.5;
+    }
+
+    /* Marquees */
+    .id-marquees {
+      border-top: 1px solid rgba(28,28,26,0.1);
+    }
+
+    .id-marquee-row {
+      overflow: hidden;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(28,28,26,0.06);
+      -webkit-mask: linear-gradient(90deg, transparent, #fff 8%, #fff 92%, transparent);
+      mask: linear-gradient(90deg, transparent, #fff 8%, #fff 92%, transparent);
+    }
+
+    .id-marquee-track {
+      display: inline-flex;
+      align-items: center;
+      width: max-content;
+      animation: id-marquee-scroll 22s linear infinite;
+    }
+
+    .id-marquee-track[data-speed="fast"] { animation-duration: 11s; }
+    .id-marquee-track[data-speed="slow"] { animation-duration: 34s; }
+
+    @keyframes id-marquee-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(calc(-100% / 12)); }
+    }
+
+    .id-marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 52px;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: white;
+      border-top: 1px solid rgba(28,28,26,0.08);
+      padding: 36px 80px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 60px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 22px;
+    }
+
+    .footer-col p,
+    .footer-col a {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: rgba(28,28,26,0.55);
+      line-height: 1.85;
+      text-decoration: none;
+      display: block;
+    }
+
+    .footer-col a:hover { color: var(--text); transition: color 0.3s; }
+    .footer-col a:active { transform: translateY(1px); }
+
+    .footer-bottom {
+      padding-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: var(--serif);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--text);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-copy {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: rgba(28,28,26,0.3);
+    }
+
+    /* ============================================================
+       ANIMATIONS
+    ============================================================ */
+
+    /* — Image: reveal top → bottom — */
+    .img-reveal-wrap {
+      overflow: hidden;
+    }
+
+    .img-reveal-wrap img {
+      clip-path: inset(0 0 100% 0);
+      transition: clip-path 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .img-reveal-wrap.is-visible img {
+      clip-path: inset(0 0 0% 0);
+    }
+
+    /* Hero img: immediate reveal */
+    .hero-img-wrap img {
+      clip-path: inset(0 0 100% 0);
+      transition: clip-path 1.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .hero-img-wrap.is-visible img {
+      clip-path: inset(0 0 0% 0);
+    }
+
+    /* — Title: line slide up — */
+    .tl-wrap {
+      display: block;
+      overflow: hidden;
+      line-height: 1.05;
+    }
+
+    .tl-inner {
+      display: block;
+      transform: translateY(108%);
+      transition: transform 1.2s cubic-bezier(0.65, 0, 0.175, 1);
+    }
+
+    .tl-inner.is-visible {
+      transform: translateY(0);
+    }
+
+    /* — Text: fade + translateY — */
+    .ta {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .ta.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+<div id="smooth-wrapper" data-scroll-container>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav>
+    <a href="#hero" class="nav-logo">Le Buffett</a>
+    <ul class="nav-links">
+      <li><a href="#about-section">Notre histoire</a></li>
+      <li><a href="#menu-section">La carte</a></li>
+      <li><a href="#reservation">Réservation</a></li>
+    </ul>
+  </nav>
+
+  <!-- ============================================================
+       SECTION 1 — HERO
+  ============================================================ -->
+  <section id="hero">
+    <div class="hero-img-wrap">
+      <img src="images/image1.jpg" alt="Le Buffett, restaurant chinois à Paris">
+    </div>
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow ta">Restaurant Chinois · Paris</div>
+      <h1 class="hero-name">
+        <span class="tl-wrap"><span class="tl-inner">Le</span></span>
+        <span class="tl-wrap"><span class="tl-inner" style="transition-delay:0.1s">Buffett</span></span>
+      </h1>
+      <div class="hero-scroll ta" style="transition-delay:0.5s">
+        <div class="scroll-bar"></div>
+        <span>Découvrir</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 2 — SPLIT STICKY
+       Image fixe à droite, contenu scrollable à gauche
+  ============================================================ -->
+  <section id="split-section">
+
+    <!-- LEFT — scrollable -->
+    <div class="split-left">
+
+      <div class="sl-img-top img-reveal-wrap">
+        <img src="images/image3.jpg" alt="Buffet de saumon fumé, fruits de mer et sushis">
+      </div>
+
+      <div class="sl-text">
+        <h2>
+          <span class="tl-wrap"><span class="tl-inner">Une table sans limite</span></span>
+        </h2>
+        <p class="ta" style="transition-delay:0.2s">
+          Au Buffett, nous célébrons la richesse de la cuisine chinoise dans toute son amplitude. Chaque plat est préparé avec soin, chaque saveur est une invitation au voyage — de Pékin à Canton, du wok au cuit-vapeur.
+        </p>
+        <p class="ta" style="transition-delay:0.3s">
+          Une symphonie gastronomique sans fin, servie sans réserve. Laissez-vous guider par vos envies. Ici, le festin n'a pas de frontières.
+        </p>
+      </div>
+
+      <div class="sl-img-bottom img-reveal-wrap">
+        <img src="images/image4.jpg" alt="Sauces et condiments asiatiques">
+      </div>
+
+    </div>
+
+    <!-- RIGHT — sticky via Locomotive Scroll -->
+    <div class="split-right img-reveal-wrap" data-scroll data-scroll-sticky data-scroll-target="#split-section">
+      <img src="images/image2.jpg" alt="Dim sum et bouchées croustillantes">
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       SECTION 3 — ABOUT (titre + image gauche / texte droite)
+  ============================================================ -->
+  <section id="about-section">
+
+    <h2 class="main-title">
+      <span class="tl-wrap" style="text-align:center"><span class="tl-inner">L'art du bouillon</span></span>
+    </h2>
+
+    <div class="about-grid">
+
+      <div class="about-img img-reveal-wrap">
+        <img src="images/image5.jpg" alt="Soupe de nouilles udon aux crevettes">
+      </div>
+
+      <div class="about-copy">
+        <p class="pull-quote ta">
+          « Chaque bol raconte une histoire,<br>chaque bouchée est un retour aux sources. »
+        </p>
+        <p class="ta" style="transition-delay:0.1s">
+          Nos bouillons mijotent des heures durant, infusés d'herbes aromatiques et d'épices soigneusement sélectionnées. Le résultat : une profondeur umami qui réchauffe l'âme et éveille les sens à chaque cuillerée.
+        </p>
+        <p class="ta" style="transition-delay:0.2s">
+          Du traditionnel ramen aux nouilles udon en bouillon clair, chaque soupe est une promesse de réconfort et d'authenticité.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 4 — LA CARTE
+  ============================================================ -->
+  <section id="menu-section">
+
+    <div class="menu-header">
+      <h2 class="menu-main-title">
+        <span class="tl-wrap" style="display:block"><span class="tl-inner" style="display:block">Le Buffet</span></span>
+      </h2>
+    </div>
+
+    <div class="menu-tabs-wrap">
+      <div class="menu-tabs">
+        <button class="menu-tab-btn active" data-tab="entrees">Entrées &amp; Sushi</button>
+        <button class="menu-tab-btn" data-tab="salades">Salades</button>
+        <button class="menu-tab-btn" data-tab="dimsum">Dim Sum</button>
+        <button class="menu-tab-btn" data-tab="chauds">Plats Chauds</button>
+        <button class="menu-tab-btn" data-tab="soupes">Soupes</button>
+        <button class="menu-tab-btn" data-tab="sauces">Sauces</button>
+        <button class="menu-tab-btn" data-tab="desserts">Desserts</button>
+      </div>
+    </div>
+
+    <div class="menu-body">
+
+      <!-- ENTRÉES FROIDES & SUSHI -->
+      <div class="menu-panel active" id="panel-entrees">
+        <h3 class="menu-panel-title">Entrées froides &amp; Sushi</h3>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Saumon fumé tranché</div>
+              <div class="item-desc">Avec citron et aneth</div>
+            </div>
+            <div class="item-price">5,50 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Tataki de thon rouge</div>
+              <div class="item-desc">Saisi au sésame et sauce ponzu</div>
+            </div>
+            <div class="item-price">7,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Makis &amp; California rolls</div>
+              <div class="item-desc">Saumon, thon et avocat</div>
+            </div>
+            <div class="item-price">6,50 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Tataki de bœuf</div>
+              <div class="item-desc">Finement tranché avec copeaux de parmesan</div>
+            </div>
+            <div class="item-price">7,50 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Crevettes marinées</div>
+              <div class="item-desc">Au citron vert et herbes fraîches</div>
+            </div>
+            <div class="item-price">6,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Salade caprese</div>
+              <div class="item-desc">Tomates cerises, mozzarella et roquette</div>
+            </div>
+            <div class="item-price">5,90 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SALADES -->
+      <div class="menu-panel" id="panel-salades">
+        <h3 class="menu-panel-title">Salades composées</h3>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Salade de crevettes roses</div>
+              <div class="item-desc">Pousses d'épinards, mangue et piment rouge</div>
+            </div>
+            <div class="item-price">7,50 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Aiguillettes de poulet grillé</div>
+              <div class="item-desc">Sur lit de kale avec sauce curry et noix</div>
+            </div>
+            <div class="item-price">7,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Salade César revisitée</div>
+              <div class="item-desc">À la romaine, parmesan et croutons maison</div>
+            </div>
+            <div class="item-price">6,50 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIM SUM -->
+      <div class="menu-panel" id="panel-dimsum">
+        <h3 class="menu-panel-title">Bouchées &amp; Dim Sum</h3>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Tofu frit croustillant</div>
+              <div class="item-desc">Carotte râpée et sauce sweet chili</div>
+            </div>
+            <div class="item-price">4,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Beignets de crevettes</div>
+              <div class="item-desc">En pâte légère, servis avec sauce aigre-douce</div>
+            </div>
+            <div class="item-price">5,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Nems croustillants</div>
+              <div class="item-desc">Au porc, vermicelles et champignons noirs</div>
+            </div>
+            <div class="item-price">5,50 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Chips de crevettes soufflées</div>
+              <div class="item-desc">Légères et aériennes</div>
+            </div>
+            <div class="item-price">3,90 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLATS CHAUDS -->
+      <div class="menu-panel" id="panel-chauds">
+        <h3 class="menu-panel-title">Plats chauds</h3>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Poulet kung-pao</div>
+              <div class="item-desc">Sauté aux poivrons verts et piments séchés</div>
+            </div>
+            <div class="item-price">10,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Lamelles de bœuf</div>
+              <div class="item-desc">Au gingembre frais et sauce huître</div>
+            </div>
+            <div class="item-price">12,50 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Canard laqué</div>
+              <div class="item-desc">Au miel-soja et cinq épices</div>
+            </div>
+            <div class="item-price">13,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Crevettes sautées</div>
+              <div class="item-desc">À l'ail confit et beurre citronné</div>
+            </div>
+            <div class="item-price">11,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Riz cantonnais</div>
+              <div class="item-desc">Sauté au jambon, œuf et petits pois</div>
+            </div>
+            <div class="item-price">7,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Nouilles de blé</div>
+              <div class="item-desc">Champignons shiitaké, brocoli et huile de sésame</div>
+            </div>
+            <div class="item-price">9,50 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOUPES -->
+      <div class="menu-panel" id="panel-soupes">
+        <h3 class="menu-panel-title">Soupes</h3>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Soupe de nouilles udon</div>
+              <div class="item-desc">Crevettes, champignons noirs et bouillon umami</div>
+            </div>
+            <div class="item-price">8,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Soupe won ton</div>
+              <div class="item-desc">Raviolis maison crevette-porc en bouillon clair</div>
+            </div>
+            <div class="item-price">7,90 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAUCES -->
+      <div class="menu-panel" id="panel-sauces">
+        <h3 class="menu-panel-title">Sauces</h3>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Sauce soja</div>
+              <div class="item-desc">Classique et savoureuse</div>
+            </div>
+            <div class="item-price">Inclus</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Sauce cacahuète</div>
+              <div class="item-desc">Au lait de coco</div>
+            </div>
+            <div class="item-price">Inclus</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Sauce aigre-douce à l'ananas</div>
+              <div class="item-desc">Fraîche et fruitée</div>
+            </div>
+            <div class="item-price">Inclus</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Sauce pimentée au sambal</div>
+              <div class="item-desc">Pour les amateurs de sensations fortes</div>
+            </div>
+            <div class="item-price">Inclus</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESSERTS -->
+      <div class="menu-panel" id="panel-desserts">
+        <h3 class="menu-panel-title">Desserts &amp; Fruits</h3>
+        <div class="menu-items">
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Corbeille de fruits frais</div>
+              <div class="item-desc">De saison</div>
+            </div>
+            <div class="item-price">3,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Flan au lait de coco</div>
+              <div class="item-desc">Et caramel léger</div>
+            </div>
+            <div class="item-price">4,90 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Beignets de banane</div>
+              <div class="item-desc">Croustillants au miel et sésame</div>
+            </div>
+            <div class="item-price">4,50 €</div>
+          </div>
+          <div class="menu-item">
+            <div class="item-info">
+              <div class="item-name">Gelée de litchi frais</div>
+              <div class="item-desc">À la menthe et citron vert</div>
+            </div>
+            <div class="item-price">4,90 €</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /menu-body -->
+  </section>
+
+  <!-- ============================================================
+       SECTION 5 — GALLERY DUO (image gauche / titre + image droite)
+  ============================================================ -->
+  <section id="gallery-section">
+
+    <div class="gallery-left">
+      <div class="gallery-left-inner img-reveal-wrap">
+        <img src="images/image6.jpg" alt="Salades fraîches composées">
+      </div>
+    </div>
+
+    <div class="gallery-right">
+<div class="gallery-right-img img-reveal-wrap">
+        <img src="images/image7.jpg" alt="Buffet de tataki de bœuf et fruits frais">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       SECTION 6 — ATMOSPHERE (pleine largeur avec texte overlay)
+  ============================================================ -->
+  <section id="atmosphere-section">
+    <div class="atm-img-wrap">
+      <img src="images/image8.jpg" alt="Salle du restaurant Le Buffett Paris">
+      <div class="atm-overlay">
+        <div class="atm-text">
+          <h2 class="atm-title">
+            <span class="tl-wrap" style="display:inline-block"><span class="tl-inner">Sans retenue</span></span>
+          </h2>
+          <p class="atm-desc ta" style="transition-delay:0.35s">
+            Saumon fumé, tataki, dim sum, bouillons parfumés — une carte sans limite pensée pour ceux qui veulent tout goûter, sans jamais choisir.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECTION 7 — IDENTITY PRE-FOOTER (ONYX style)
+  ============================================================ -->
+  <section id="identity-section">
+
+    <div class="id-grid">
+      <div class="id-text-col">
+        <p class="id-eyebrow ta">Restaurant Chinois · Paris</p>
+        <h2 class="id-name">
+          <span class="tl-wrap"><span class="tl-inner">Buffett</span></span>
+          <span class="tl-wrap"><span class="tl-inner" style="transition-delay:0.12s">Paris</span></span>
+        </h2>
+        <p class="id-tagline ta" style="transition-delay:0.2s">Une table sans retenue, au cœur de la capitale.</p>
+      </div>
+      <div class="id-img-col">
+        <img src="images/image9.jpg" alt="Restaurant Le Buffett Paris">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer id="reservation">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Adresse</h4>
+        <p>12 rue du Palais Royal<br>75001 Paris, France</p>
+      </div>
+      <div class="footer-col">
+        <h4>Réservation</h4>
+        <a href="tel:+33142600000">+33 (0)1 42 60 00 00</a>
+        <a href="mailto:contact@lebuffett.fr">contact@lebuffett.fr</a>
+      </div>
+      <div class="footer-col">
+        <h4>Horaires</h4>
+        <p>Ouvert tous les jours</p>
+        <p>Déjeuner &nbsp;·&nbsp; 12:00 – 14:30</p>
+        <p>Dîner &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;·&nbsp; 19:00 – 22:30</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+  <script>
+    /* ---- MENU ITEMS RESTRUCTURE (column layout + line-reveal wrap) ---- */
+    document.querySelectorAll('.menu-item').forEach(item => {
+      const name  = item.querySelector('.item-name');
+      const desc  = item.querySelector('.item-desc');
+      const price = item.querySelector('.item-price');
+
+      const line = document.createElement('div');
+      line.className = 'item-line';
+
+      /* Wrap name in overflow:hidden for line-reveal */
+      const nameWrap = document.createElement('div');
+      nameWrap.className = 'item-name-wrap';
+      nameWrap.appendChild(name);
+
+      const topRow = document.createElement('div');
+      topRow.className = 'item-top-row';
+      topRow.appendChild(nameWrap);
+      topRow.appendChild(line);
+      if (desc) topRow.appendChild(desc);
+      topRow.appendChild(price);
+
+      item.innerHTML = '';
+      item.appendChild(topRow);
+    });
+
+
+    /* ---- SCROLL ANIMATIONS ---- */
+    const baseOptions = {
+      threshold: 0.12,
+      rootMargin: '0px 0px -60px 0px'
+    };
+
+    /* Images — reveal top → bottom */
+    const imgObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          imgObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.img-reveal-wrap').forEach(el => imgObs.observe(el));
+
+    /* Marquees — clone items to 12 per track for seamless loop */
+    document.querySelectorAll('.id-marquee-track').forEach(track => {
+      const item = track.querySelector('.id-marquee-item');
+      if (!item) return;
+      for (let i = 1; i < 12; i++) track.appendChild(item.cloneNode(true));
+    });
+
+    /* Titles — line slide up */
+    const titleObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.tl-inner').forEach(line => {
+            line.classList.add('is-visible');
+          });
+          titleObs.unobserve(entry.target);
+        }
+      });
+    }, baseOptions);
+
+    document.querySelectorAll('h1, h2, h3').forEach(el => {
+      if (el.querySelector('.tl-inner')) titleObs.observe(el);
+    });
+
+    /* Text — fade up */
+    const textObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          textObs.unobserve(entry.target);
+        }
+      });
+    }, baseOptions);
+
+    document.querySelectorAll('.ta').forEach(el => textObs.observe(el));
+
+    /* ---- SCROLL ZOOM (images 2, 3, 4) ---- */
+    const splitSection = document.querySelector('#split-section');
+    const stickyImg   = document.querySelector('.split-right img');
+    const zoomImgs        = document.querySelectorAll('.sl-img-top img, .sl-img-bottom img');
+    const zoomImg5        = document.querySelector('.about-img img');
+    const zoomGalleryImgs = document.querySelectorAll('.gallery-left-inner img, .gallery-right-img img');
+    const galleryImg7     = document.querySelector('.gallery-right-img img');
+    const galleryRightImg = document.querySelector('.gallery-right-img');
+    const galleryRight    = document.querySelector('.gallery-right');
+    const gallerySection  = document.querySelector('#gallery-section');
+    const atmSection      = document.querySelector('#atmosphere-section');
+    const atmWrap         = document.querySelector('#atmosphere-section .atm-img-wrap');
+    const atmText         = document.querySelector('.atm-text');
+    const idImg           = document.querySelector('.id-img-col img');
+
+    zoomImgs.forEach(img => img.style.willChange = 'transform');
+    zoomGalleryImgs.forEach(img => img.style.willChange = 'transform');
+    if (galleryRight) galleryRight.style.willChange = 'transform';
+    if (galleryRightImg) galleryRightImg.style.willChange = 'transform';
+    if (stickyImg) stickyImg.style.willChange = 'transform';
+    if (zoomImg5) zoomImg5.style.willChange = 'transform';
+    if (idImg) idImg.style.willChange = 'transform';
+    if (atmWrap) atmWrap.style.clipPath = 'inset(0 120px)';
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function updateZoom() {
+      /* Images 3 & 4 — zoom based on their own scroll position */
+      zoomImgs.forEach(img => {
+        const wrap = img.parentElement;
+        const rect = wrap.getBoundingClientRect();
+        const vh   = window.innerHeight;
+        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+        img.style.transform = `scale(${1.12 - progress * 0.12})`;
+      });
+
+      /* Image 5 — stronger dezoom, starts early */
+      if (zoomImg5) {
+        const wrap = zoomImg5.parentElement;
+        const rect = wrap.getBoundingClientRect();
+        const vh   = window.innerHeight;
+        const progress = Math.max(0, Math.min(1, (vh * 1.4 - rect.top) / (vh + rect.height)));
+        zoomImg5.style.transform = `scale(${1.2 - progress * 0.2})`;
+      }
+
+      /* Section 6 — expansion horizontale + parallaxe texte */
+      if (atmSection && atmWrap) {
+        const rect     = atmSection.getBoundingClientRect();
+        const vh       = window.innerHeight;
+
+        /* Expansion latérale : finit quand le bas de l'image atteint le milieu de l'écran */
+        const expandProgress = Math.max(0, Math.min(1, (vh - rect.top) / (vh / 2 + rect.height)));
+        const inset = Math.round(120 * (1 - expandProgress));
+        atmWrap.style.clipPath = `inset(0 ${inset}px)`;
+
+        /* Parallaxe texte : descend légèrement au fil du scroll */
+        if (atmText) {
+          const scrollProgress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+          atmText.style.transform = `translateY(${Math.round(scrollProgress * 180)}px)`;
+        }
+      }
+
+      /* Images galerie (section 5) */
+      zoomGalleryImgs.forEach(img => {
+        const wrap = img.parentElement;
+        const rect = wrap.getBoundingClientRect();
+        const vh   = window.innerHeight;
+        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+        img.style.transform = `scale(${1.12 - progress * 0.12})`;
+      });
+
+
+      /* Image 2 — zoom based on section scroll progress */
+      if (stickyImg && splitSection) {
+        const rect     = splitSection.getBoundingClientRect();
+        const scrolled = Math.max(0, -rect.top);
+        const total    = Math.max(1, splitSection.offsetHeight - window.innerHeight);
+        const progress = Math.max(0, Math.min(1, scrolled / total));
+        stickyImg.style.transform = `scale(${1.12 - progress * 0.12})`;
+      }
+
+      /* Image section 7 — dézoom au scroll */
+      if (idImg) {
+        const vh7    = window.innerHeight;
+        const wrap   = idImg.parentElement;
+        const rect   = wrap.getBoundingClientRect();
+        const startAt = vh7 * 0.8;
+        const endAt   = -rect.height * 0.8;
+        const progress = Math.max(0, Math.min(1, (startAt - rect.top) / (startAt - endAt)));
+        idImg.style.transform = `scale(${1.15 - progress * 0.15})`;
+      }
+
+    }
+
+    /* Nav — fond frosté après le hero */
+    const navEl = document.querySelector('nav');
+
+    /* ---- LOCOMOTIVE SCROLL + GSAP ---- */
+    gsap.registerPlugin(ScrollTrigger);
+
+    const locoScroll = new LocomotiveScroll({
+      el: document.querySelector('[data-scroll-container]'),
+      smooth: true,
+      multiplier: 0.7,
+      lerp: 0.08,
+    });
+
+    // Sync Locomotive with GSAP ScrollTrigger
+    ScrollTrigger.scrollerProxy('[data-scroll-container]', {
+      scrollTop(value) {
+        return arguments.length
+          ? locoScroll.scrollTo(value, { duration: 0, disableLerp: true })
+          : locoScroll.scroll.instance.scroll.y;
+      },
+      getBoundingClientRect() {
+        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+      },
+    });
+
+    locoScroll.on('scroll', ({ scroll }) => {
+      ScrollTrigger.update();
+      updateZoom();
+      navEl.classList.toggle('nav-scrolled', scroll.y > 80);
+    });
+
+    ScrollTrigger.addEventListener('refresh', () => locoScroll.update());
+    ScrollTrigger.refresh();
+    updateZoom();
+
+    /* ---- MENU — animation le-spike ---- */
+    const menuItemStyle = document.createElement('style');
+    menuItemStyle.textContent = `
+      /* Premier titre : flip 3D par caractère */
+      .menu-panel-title { perspective: 500px; }
+      .ch-outer { display: inline-block; perspective: 500px; }
+      .ch-inner {
+        display: inline-block;
+        opacity: 0;
+        transform: rotateX(-90deg);
+        transform-origin: bottom center;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
+        transition: opacity 0.9s cubic-bezier(.215,.61,.355,1),
+                    transform 0.9s cubic-bezier(.215,.61,.355,1);
+      }
+      .ch-inner.ch-vis { opacity: 1; transform: rotateX(0deg); }
+
+      /* Autres titres + items : slide + scale + fade */
+      .menu-item, .title-fade {
+        opacity: 0;
+        transform: translateY(32px) scale(0.8);
+        transition: opacity 0.9s cubic-bezier(.215,.61,.355,1),
+                    transform 0.9s cubic-bezier(.215,.61,.355,1);
+        will-change: transform, opacity;
+      }
+      .menu-item.mi-vis, .title-fade.mi-vis { opacity: 1; transform: translateY(0) scale(1); }
+
+      /* Reset item-name / item-desc (ils bougent avec l'item parent) */
+      .item-name { opacity: 1 !important; transform: none !important; }
+      .item-desc { opacity: 1 !important; transform: none !important; }
+    `;
+    document.head.appendChild(menuItemStyle);
+
+    /* Split en caractères (premier titre uniquement) */
+    function splitToChars(el) {
+      const text = el.textContent;
+      el.textContent = '';
+      [...text].forEach(ch => {
+        if (ch === ' ') {
+          el.appendChild(document.createTextNode('\xa0'));
+        } else {
+          const outer = document.createElement('span');
+          outer.className = 'ch-outer';
+          const inner = document.createElement('span');
+          inner.className = 'ch-inner';
+          inner.textContent = ch;
+          outer.appendChild(inner);
+          el.appendChild(outer);
+        }
+      });
+    }
+
+    const allTitles = document.querySelectorAll('.menu-panel-title');
+
+    /* Premier titre : flip 3D */
+    splitToChars(allTitles[0]);
+    const titleCharObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll('.ch-inner').forEach((ch, i) => {
+          ch.style.transitionDelay = `${i * 0.02}s`;
+          ch.classList.add('ch-vis');
+        });
+        titleCharObs.unobserve(entry.target);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    titleCharObs.observe(allTitles[0]);
+
+    /* Autres titres : même slide+fade que les items */
+    const titleFadeObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.style.transitionDelay = '0.1s';
+        entry.target.classList.add('mi-vis');
+        titleFadeObs.unobserve(entry.target);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    allTitles.forEach((t, i) => {
+      if (i === 0) return;
+      t.classList.add('title-fade');
+      titleFadeObs.observe(t);
+    });
+
+    /* Observer items */
+    const menuItemObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const item = entry.target;
+        const siblings = [...item.closest('.menu-items').children];
+        const idx = siblings.indexOf(item);
+        item.style.transitionDelay = `${0.2 + idx * 0.07}s`;
+        item.classList.add('mi-vis');
+        menuItemObs.unobserve(item);
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.menu-item').forEach(item => menuItemObs.observe(item));
+
+    /* ---- GALLERY TITLE — même flip 3D que "Entrées froides & Sushi" ---- */
+    const galleryTitle = document.querySelector('.gallery-title-anim');
+    if (galleryTitle) {
+      splitToChars(galleryTitle);
+      const galleryTitleObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.querySelectorAll('.ch-inner').forEach((ch, i) => {
+            ch.style.transitionDelay = `${i * 0.02}s`;
+            ch.classList.add('ch-vis');
+          });
+          galleryTitleObs.unobserve(entry.target);
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      galleryTitleObs.observe(galleryTitle);
+    }
+
+    /* ---- HERO: auto-trigger on load ---- */
+    window.addEventListener('load', () => {
+      /* Image */
+      const heroImg = document.querySelector('.hero-img-wrap');
+      if (heroImg) setTimeout(() => heroImg.classList.add('is-visible'), 80);
+
+      /* Title lines */
+      document.querySelectorAll('#hero .tl-inner').forEach((el, i) => {
+        setTimeout(() => el.classList.add('is-visible'), 300 + i * 130);
+      });
+
+      /* Eyebrow + scroll hint */
+      document.querySelectorAll('#hero .ta').forEach((el, i) => {
+        setTimeout(() => el.classList.add('is-visible'), 200 + i * 180);
+      });
+    });
+
+  </script>
+
+</div><!-- /#smooth-wrapper -->
+</body>
+</html>
